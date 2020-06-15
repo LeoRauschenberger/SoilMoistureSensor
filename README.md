@@ -5,4 +5,9 @@ What's needed:
 
 - DS1302 Real time clock module
 - 0.91 inch OLED display
-- any Arduino with sufficient storage space (168p has too little)
+- any Arduino with sufficient storage space (168p has too little space available!)
+
+
+You can find a 3D-printable housing here:
+
+https://www.thingiverse.com/thing:3857846
