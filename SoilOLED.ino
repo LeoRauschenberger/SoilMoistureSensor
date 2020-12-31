@@ -4,6 +4,21 @@
  * requires OLED display and Ds1302 clock module
  * This example requires the SSD1306 display driver by Adafruit: https://github.com/adafruit/Adafruit_SSD1306
  * Video detailing the capacitive soil moisture measurement probe: https://www.youtube.com/watch?v=a-pqcmCr79I
+ * Connections:
+ * DS1302:  
+   CE        -> Arduino D2
+   I/O       -> Arduino D3
+   SCLK      -> Arduino D4
+ * OLED (I2C protocol)
+   SDA       -> Arduino A4
+   SCL       -> Arduino A5
+   VCC       -> 3.3 V to 5 V
+   GND       -> GND
+ * Soil Moisture Sensor
+   AOUT       -> Arduino A0
+   VCC        -> 3.3 V to 5 V (note: Calibration may depend on VCC)
+   GND        -> GND
+   
 *********************************************************************/
 
 #include <Wire.h>
@@ -11,7 +26,7 @@
 #include <DS1302.h>
 DS1302_RAM ramBuffer;
 
-// Init the DS1302
+// Init the DS1302  (2,3,4 are the pin definitions)
 DS1302 rtc(2, 3, 4);
 
 #define OLED_RESET 4
@@ -22,9 +37,8 @@ const int dryProbe      = 610;   // dry readings are around   3v or analog input
 
 // on 3.3 V
 // Values for blue sensor:
-//330 - 610
-// Values for grey sensor:
-// 300 - 575
+// Sensor 1: 330 - 610
+// Sensor 2: 300 - 575
 
 
 // Analog Sensor Input Pin
@@ -44,8 +58,8 @@ int DaysPassed = 0;
 long JulianDate(int Y, int M, int D){
   long centuries = Y/100;
   long leaps = centuries/4;                             
-  long leapDays = 2 - centuries + leaps;         // note is negative!!
-  long yearDays = 365.25 * (Y + 4716);        // days until 1 jan this year
+  long leapDays = 2 - centuries + leaps;     // note is negative!!
+  long yearDays = 365.25 * (Y + 4716);       // days until 1 jan this year
   long monthDays = 30.6001* (M + 1);         // days until 1st month
   long jd = leapDays + D + monthDays + yearDays -1524.5;
   return jd;
@@ -55,7 +69,7 @@ long JulianDate(int Y, int M, int D){
 //----------------------------------------------------------------------------------------------
 void setup()   {
 
-  Serial.begin(9600);           // some debug messages will display sensor raw data
+  //Serial.begin(9600);           // some debug messages will display sensor raw data
 
   display.begin(SSD1306_SWITCHCAPVCC, 0x3C);  // initialize with the I2C address of the display
   display.clearDisplay();                     // clear the display buffer
@@ -65,11 +79,11 @@ void setup()   {
   rtc.writeProtect(false);
   
   // Use lines to set the DS1302, then reupload sketch with the lines commented out!!
-  //rtc.setDOW(SATURDAY);        // Set Day-of-Week to FRIDAY
-  //rtc.setTime(10, 47, 0);     // Set the time to 12:00:00 (24hr format)
-  //rtc.setDate(7, 9, 2019);   // Set the date to August 6th, 2010 
+  //rtc.setDOW(SATURDAY);        // Set Day-of-Week to e.g. SATURDAY
+  //rtc.setTime(12, 00, 0);      // Set the time to e.g. 12:00:00 (24hr format)
+  //rtc.setDate(8, 6, 2020);     // Set the date to e.g. August 6th, 2020 
 
-  // If necessary, clear the RAM. This will fill the RAM with zeros. Must be commented in final upload.
+  // If necessary, clear the RAM. This will fill the RAM with zeros. Must be commented out in final upload!!
   //for (int i=0; i<31; i++) ramBuffer.cell[i]=0;
   //rtc.writeBuffer(ramBuffer); 
 }
@@ -81,26 +95,26 @@ void loop() {
     validSensorReading = sensorReading;
   }
 
-  Serial.print ("Old Sensor Reading: ");
-  Serial.println (validSensorReading);
-  Serial.print ("New Sensor Reading: ");
-  Serial.println (sensorReading);
+  //Serial.print ("Old Sensor Reading: ");
+  //Serial.println (validSensorReading);
+  //Serial.print ("New Sensor Reading: ");
+  //Serial.println (sensorReading);
 
   sensorResult = map(validSensorReading, wetProbe, dryProbe, 0, 4);  // scale analog input to a smaller range for wet to dry
 
-  Serial.print ("Scaled Sensor Reading 0-4: ");
-  Serial.println (sensorResult);
+  //Serial.print ("Scaled Sensor Reading 0-4: ");
+  //Serial.println (sensorResult);
   
   sensorPercent = map(validSensorReading, dryProbe, wetProbe, 0, 100);  // scale analog input to a smaller range for wet to dry
-  Serial.print ("Percentage: ");
-  Serial.print (sensorPercent);
-  Serial.print (" %");
-  Serial.println ();
+  //Serial.print ("Percentage: ");
+  //Serial.print (sensorPercent);
+  //Serial.print (" %");
+  //Serial.println ();
 
   // Clock data
-  Serial.println(rtc.getTimeStr());
-  Serial.println(rtc.getDOWStr(FORMAT_SHORT));
-  Serial.println(rtc.getDateStr());
+  //Serial.println(rtc.getTimeStr());
+  //Serial.println(rtc.getDOWStr(FORMAT_SHORT));
+  //Serial.println(rtc.getDateStr());
   
 
   // display the correct soil moisture level on the display
