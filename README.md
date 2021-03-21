@@ -9,7 +9,7 @@ What's needed:
 
 Wiring Diagram:
 
-![alt text](https://github.com/LeoBay/SoilMoistureSensor/blob/main/Wiring%20Diagram.PNG)
+![alt text](https://github.com/LeoBay/SoilMoistureSensor/blob/master/Wiring%20Diagram.PNG)
 
 You can find a 3D-printable housing here:
 
