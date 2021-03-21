@@ -7,6 +7,9 @@ What's needed:
 - 0.91 inch OLED display
 - any Arduino with sufficient storage space (168p has too little space available!)
 
+Wiring Diagram:
+
+![alt text](https://github.com/LeoBay/SoilMoistureSensor/blob/main/Wiring Diagram.png)
 
 You can find a 3D-printable housing here:
 
