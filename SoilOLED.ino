@@ -6,9 +6,9 @@
  * Video detailing the capacitive soil moisture measurement probe: https://www.youtube.com/watch?v=a-pqcmCr79I
  * Connections:
  * DS1302:  
-   CE        -> Arduino D2
-   I/O       -> Arduino D3
-   SCLK      -> Arduino D4
+   CE (or RST)     -> Arduino D2
+   I/O (or DAT)    -> Arduino D3
+   SCLK (or CLK)   -> Arduino D4
  * OLED (I2C protocol)
    SDA       -> Arduino A4
    SCL       -> Arduino A5
